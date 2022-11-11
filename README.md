@@ -1,13 +1,13 @@
-#eCommerce de productos de moda
+# eCommerce de productos de moda
 
 
-#Web
+# Web
 Click acá
 ```
 https://shiny-cascaron-69b95f.netlify.app/
 ```
 
-#Como usar
+# Como usar
 Para clonar y correr esta app, vas a necesitar de Git y Node.js que incluye a npm). Luego es necesario seguir esta linea de comandos:
 ```
 # Clonar este repositorio
