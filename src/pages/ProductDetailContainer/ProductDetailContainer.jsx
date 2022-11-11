@@ -2,18 +2,18 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import ProductDetail from "./ProductDetail";
 import Spinner from "../../components/Spinner/Spinner";
+import { getProduct } from '../../services/firebase'
 
 const ProductDetailContainer = () => {
   const [isLoading, setIsloading] = useState(false);
   const [data, setData] = useState([]);
   const { id } = useParams();
 
-  const getProduct = async () => {
+  const findProduct = async () => {
     setIsloading(true);
     try {
-      const response = await fetch(`https://fakestoreapi.com/products/${id}`);
-      const product = await response.json();
-      setData(product);
+      const response = await getProduct(id);
+      setData(response);
       setIsloading(false);
     } catch (e) {
       console.log(e);
@@ -22,7 +22,7 @@ const ProductDetailContainer = () => {
   };
 
   useEffect(() => {
-    getProduct();
+    findProduct();
   }, []);
 
   return (
@@ -30,7 +30,7 @@ const ProductDetailContainer = () => {
       {isLoading ? (
           <Spinner />
       ) : (
-        <ProductDetail {...data} />
+          <ProductDetail item={data} />
       )}
     </>
   );

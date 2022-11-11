@@ -2,14 +2,30 @@
 import React from "react";
 import CartWidget from "../CartWidget/CartWidget";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useEffect } from "react";
+import { getCategories } from "../../services/firebase";
 
 function Navbar() {
-  const categories = [
-    { id: 1, name: "electronics", route: `/category/electronics`  },
-    { id: 2, name: "jewelery", route: "/category/jewelery"  },
-    { id: 3, name: "men's clothing", route: "/category/men's clothing"  },
-    { id: 4, name: "women's clothing", route: "/category/women's clothing"  },
-  ];
+  const [isOpen, setIsOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
+
+  async function findCategories() {
+  try {
+    const data = await getCategories();
+    console.log(data)
+    setCategories(data.map(item => ({ ...item, route: `/category/${item.name}` })))
+
+  } catch(error) {
+    console.log(error)
+  } 
+}
+  useEffect(() => {
+    findCategories()
+  },[])
+  const handleDropDown = () => {
+    setIsOpen((previousState) => !previousState)
+  }
 
   return (
     <nav class="navbar navbar-expand-lg bg-dark p-2 mb-2 ">
@@ -42,15 +58,33 @@ function Navbar() {
                 Inicio
               </Link>
             </li>
-            {categories.map((categoria) => {
+            <li class={`nav-item dropdown ${isOpen ? 'show' : '' }`}>
+              <a  
+                onClick={handleDropDown} 
+                class="nav-link dropdown-toggle text-white" 
+                href="#" id="navbarDropdownMenuLink" 
+                data-toggle="dropdown" 
+                >
+                Categorias
+              </a>
+              <div class={`dropdown-menu ${isOpen ? 'show' : '' }`} aria-labelledby="navbarDropdownMenuLink">
+              {categories?.map((categoria) => {
               return (
-                <li class="nav-item mx-3">
                 <Link key={categoria.id} to={categoria.route} class="nav-link text-white active">
+                  <p class="dropdown-item" href="#">
                   {categoria.name}
+                </p>
                 </Link>
-                </li>
               );
             })}
+              </div>
+            </li>
+            <li>
+            <Link to="/cart" class="nav-link text-white active">
+                  <p class="dropdown-item" href="#"> Cart
+                </p>
+                </Link>
+            </li>
           </ul>
         </div>
       </div>

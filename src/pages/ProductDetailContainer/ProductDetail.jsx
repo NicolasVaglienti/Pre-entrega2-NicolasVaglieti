@@ -1,21 +1,27 @@
-import "./ProductDetail.css";
+import { useContext } from 'react'
+import {useParams} from 'react-router-dom'
 import Button from "../../components/Button/Button";
+import { CartContext } from '../../providers/cartProvider';
+import "./ProductDetail.css";
 
-function ProductDetail({ image, title , price , description }) {
+function ProductDetail({ item }) {
+  const { id } = useParams();
+  const { addItem } = useContext(CartContext)
+
   return (
     <div className="container d-flex shadow p-3 mb-5 bg-body rounded">
       <div className="img">
-        <img src={image} alt="imagen" />
+        <img src={item.image} alt="imagen" />
       </div>
       <div className="c-detail d-flex flex-column align-items-center">
         <div className="c-content">
           <h2>
-            {title} 
+            {item.title} 
           </h2>
-          <p>{description}</p>
-          <h4>${price}</h4>
+          <p>{item.description}</p>
+          <h4>${item.price}</h4>
         </div>
-        <div className="c-button m-auto ">
+        <div className="c-button m-auto " onClick={() => addItem({...item, id}, 1)}>
           <Button title="🛒" />
         </div>
       </div>
@@ -24,18 +30,3 @@ function ProductDetail({ image, title , price , description }) {
 }
 
 export default ProductDetail;
-
-// category
-// ,
-// description
-// ,id
-// ,
-// image
-// ,
-// price
-// ,
-// rating
-// ,
-// count,
-// rate,
-// title,

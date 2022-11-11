@@ -3,6 +3,7 @@ import Item from "../Item/Item";
 import FlexWrapper from "../Flexwrapper/Flexwrapper";
 import Spinner from "../Spinner/Spinner";
 import { useParams } from "react-router-dom";
+import { getData, findProductByCategory } from '../../services/firebase'
 
 function ItemListContainer(props) {
   const [isLoading, setIsloading] = useState(false);
@@ -12,12 +13,13 @@ function ItemListContainer(props) {
 
   const getProducts = async () => {
     setIsloading(true);
-    const url = id
-      ? `https://fakestoreapi.com/products/category/${id}`
-      : `https://fakestoreapi.com/products`;
     try {
-      const response = await fetch(url);
-      const products = await response.json();
+      let products;
+      if(id) {
+        products = await findProductByCategory(id)
+      } else {
+        products = await getData()
+      }
       setData(products);
       setIsloading(false);
     } catch (e) {
@@ -25,10 +27,7 @@ function ItemListContainer(props) {
       setIsloading(false);
     }
   };
-
-  useEffect(() => {
-    getProducts();
-  }, [id]);
+  useEffect(() => {getProducts()}, [id]);
 
   return (
     <div>
