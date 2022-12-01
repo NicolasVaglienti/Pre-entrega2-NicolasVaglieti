@@ -23,7 +23,6 @@ function ItemListContainer(props) {
       setData(products);
       setIsloading(false);
     } catch (e) {
-      console.log(e);
       setIsloading(false);
     }
   };

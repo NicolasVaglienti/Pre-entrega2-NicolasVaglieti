@@ -16,7 +16,6 @@ const ProductDetailContainer = () => {
       setData(response);
       setIsloading(false);
     } catch (e) {
-      console.log(e);
       setIsloading(false);
     }
   };

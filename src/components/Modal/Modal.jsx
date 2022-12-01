@@ -1,7 +1,8 @@
-import React from "react";
+import React, {useContext} from "react";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from "react-router-dom";
+import {CartContext} from '../../providers/cartProvider'
 
 
 
@@ -9,7 +10,9 @@ import { useNavigate } from "react-router-dom";
 
 const SuccessModal = ({ orderData, isOpen, setIsOpen }) => {
     const navigate = useNavigate();
+    const { clearCart } = useContext(CartContext);
   const handleClose = () => {
+    clearCart()
     setIsOpen(false)
     navigate(`/`);
 };

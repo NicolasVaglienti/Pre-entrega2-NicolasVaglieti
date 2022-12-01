@@ -21,7 +21,6 @@ useEffect(() => {
 
     const addItem = (item, quantity = 0) => {
         const cart = [...productList]
-        console.log(item?.id)
         const product = isInCart(item?.id)
         if (!product) {
 			setProductList([...cart, { ...item, quantity }])
@@ -45,7 +44,6 @@ useEffect(() => {
 
     const restQuantity = (item) => {
         const cart = [...productList];
-        
         if (item.quantity <= 1 ) {
             const filteredList = productList.filter(product => item.id !== product.id);
             return setProductList(filteredList)
@@ -58,7 +56,7 @@ useEffect(() => {
         
           
             return obj;
-          })
+          })  
           setProductList([...newArr])
         
     }
@@ -70,9 +68,18 @@ useEffect(() => {
         });
         return total;
       }
+    function getTotalCount(productList) {
+      const count = productList?.reduce((amount, item) => item.quantity + amount, 0);
+      setTotalCount(count)
+    }  
+
+    function clearCart() {
+      setProductList([])
+    }
 
     useEffect(() => {
         getTotalPrice()
+        getTotalCount(productList)
     },[productList])
  
     return (
@@ -82,7 +89,9 @@ useEffect(() => {
             addItem,
             removeItem,
             restQuantity,
-            getTotalPrice
+            getTotalPrice,
+            clearCart,
+            isInCart
         }}>
             {children}
         </CartContext.Provider>

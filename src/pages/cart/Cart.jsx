@@ -1,11 +1,22 @@
 import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { CartContext } from "../../providers/cartProvider";
 import FlexWrapper from "../../components/Flexwrapper/Flexwrapper";
 import UserForm from '../../components/UserForm/UserForm'
+import ItemCount from '../../components/ItemCount/ItemCount'
 
 
 export default function Cart() {
-  const { productList, removeItem, restQuantity, addItem, getTotalPrice } = useContext(CartContext);
+  const navigate = useNavigate();
+  const { productList, removeItem, restQuantity, addItem, getTotalPrice, clearCart, totalCount } = useContext(CartContext);
+
+  if(!totalCount) {
+    return (
+      <FlexWrapper>
+        <button onClick={() => navigate('/')}>Volver al inicio</button>
+      </FlexWrapper>
+)
+  }
 
   return (
     <div>
@@ -18,18 +29,12 @@ export default function Cart() {
               </div>
               <h4>{product.name}</h4>
               <h4>${product.price} x unidad</h4>
-              <h4>Cantidad: {product.quantity}</h4>
-              <div style={{display:"flex", width:"150px", justifyContent:"space-evenly"}}>
-                <h4 onClick={() => restQuantity(product)}><i class="bi bi-dash-circle"></i></h4>
-                <h4 onClick={() => addItem(product)}><i class="bi bi-plus-circle"></i></h4>
-              </div>
-              <h4>Precio Total: ${product.quantity * product.price}</h4>
-
+              <ItemCount product={product} restQuantity={restQuantity} addItem={addItem}/>
               <button onClick={() => removeItem(product)}>Borrar item</button>
             </div>
           ))}
 
-          {/* <button onClick={() => clearCart()}>Borrar Carrito</button> */}
+          <button onClick={() => clearCart()}>Borrar Carrito</button>
 
           <UserForm cart={productList} getTotalPrice={getTotalPrice} />
         </FlexWrapper>

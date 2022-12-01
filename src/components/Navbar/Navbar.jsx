@@ -13,11 +13,9 @@ function Navbar() {
   async function findCategories() {
   try {
     const data = await getCategories();
-    console.log(data)
     setCategories(data.map(item => ({ ...item, route: `/category/${item.name}` })))
 
   } catch(error) {
-    console.log(error)
   } 
 }
   useEffect(() => {
@@ -88,7 +86,9 @@ function Navbar() {
           </ul>
         </div>
       </div>
+      <Link to="/cart" class="nav-link text-white active">
       <CartWidget />
+      </Link>
     </nav>
   );
 }
